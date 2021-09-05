@@ -1,7 +1,9 @@
 import numpy as np
 import math
-def get_function_details(function_name):
 
+def get_function_details(function_name):
+	# function which returns the function definition 
+	# based on the name
 	if function_name=='F1':
 		fobj = F1
 		lb=[-100]
@@ -243,7 +245,6 @@ def F12(x):
  
 
 def F13(x):
-    
     dim = len(x)
     y = np.array(x)    
     val1 = np.sum(Ufun(x,5,100,4))
