@@ -64,7 +64,7 @@ def gen_Intergers(dim, count):
 	pos = np.argsort(temp)[0:count]
 	return pos
 
-def GWFA(num_water_sources, num_iteration, function_name, num_runs):
+def GWFA(function_name, num_water_sources=1000, num_iteration=50, k=0.65, alpha=0.7, percent_DA=20, beta=0.5, gamma=0.5):
 	# some preprocessing after getting the function to be optimized
 	f, lb, ub, dim = get_function_details(function_name)
 	ub = np.asarray(ub)
@@ -79,9 +79,7 @@ def GWFA(num_water_sources, num_iteration, function_name, num_runs):
 	func_val = evaluate(water_sources, f)
 
 	# parametric values
-	k = 0.65
-	alpha = 0.7
-	num_DA = int(0.2*num_water_sources)
+	num_DA = int((percent_DA/100)*num_water_sources)
 	num_RA = num_water_sources - num_DA
 	DA = np.zeros((num_DA, dim))
 	RA = np.zeros((num_RA, dim))
@@ -149,7 +147,7 @@ def GWFA(num_water_sources, num_iteration, function_name, num_runs):
 
 				# update the RAs
 				if psi!=0:
-					vel[num_DA + cur_RA_idx] = 0.5*vel[num_DA + cur_RA_idx] + 0.5*(k*i)/psi
+					vel[num_DA + cur_RA_idx] = beta*vel[num_DA + cur_RA_idx] + gamma*(k*i)/psi
 					RA[cur_RA_idx, chng_pos] = RA[cur_RA_idx, chng_pos] + vel[num_DA + cur_RA_idx][chng_pos]
 					RA[cur_RA_idx] = normalize(RA[cur_RA_idx], lb, ub)
 			else:
